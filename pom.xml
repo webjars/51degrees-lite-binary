@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
+
+    <packaging>jar</packaging>
+    <groupId>org.webjars</groupId>
+    <artifactId>51degrees-lite-binary</artifactId>
+    <version>3.2-201602</version>
+    <name>51 Degrees Lite Data Files</name>
+    <description>WebJar for 51 Degrees Lite Data Files for Month ${upstream.month}.</description>
+    <url>http://webjars.org</url>
+
+    <developers>
+        <developer>
+            <id>domdorn</id>
+            <name>Dominik Dorn</name>
+            <email>dominik@greyflower.media</email>
+            <url>http://www.greyflower.media</url>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>Mozilla Public License 2</name>
+            <url>
+                https://github.com/51Degrees/Device-Detection/blob/443dcaff8f6d54a55de6e4715357aca2c194842b/data/README.md
+            </url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>http://github.com/webjars/51degrees-lite-binary</url>
+        <connection>scm:git:https://github.com/webjars/51degrees-lite-binary.git</connection>
+        <developerConnection>scm:git:https://github.com/webjars/51degrees-lite-binary.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <upstream.version>3.2</upstream.version>
+        <upstream.month>201602</upstream.month>
+        <upstream.hash>30aa76e0e46b347a6dda420b3390f540e8e3cfcf</upstream.hash>
+        <upstream.repo>51Degrees/Device-Detection</upstream.repo>
+        <upstream.data.filename>51Degrees-LiteV3.2.dat</upstream.data.filename>
+        <upstream.trie.filename>51Degrees-LiteV3.2.trie</upstream.trie.filename>
+
+        <target.data.filename>51Degrees-Lite.dat</target.data.filename>
+        <target.trie.filename>51Degrees-Lite.trie</target.trie.filename>
+
+        <destDir>${project.build.outputDirectory}/META-INF/resources/webjars/${project.artifactId}/</destDir>
+    </properties>
+
+    <build>
+        <plugins>
+            <!--<plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>wagon-maven-plugin</artifactId>
+                <version>1.0-beta-5</version>
+                <executions>
+                    <execution>
+                        <id>downloadData</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>download-single</goal>
+                        </goals>
+                        <configuration>
+                            <url>https://github.com/${upstream.repo}/raw/${upstream.hash}/data</url>
+                            <fromFile>${upstream.data.filename}</fromFile>
+                            <toFile>${project.build.directory}/${target.data.filename}</toFile>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>downloadTrie</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>download-single</goal>
+                        </goals>
+                        <configuration>
+                            <url>https://github.com/${upstream.repo}/raw/${upstream.hash}/data</url>
+                            <fromFile>${upstream.trie.filename}</fromFile>
+                            <toFile>${project.build.directory}/${target.trie.filename}</toFile>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>-->
+
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <echo message="moving resources"/>
+                                <move todir="${destDir}">
+                                    <fileset dir="${project.build.directory}/">
+                                        <include name="${target.data.filename}" />
+                                        <include name="${target.trie.filename}" />
+                                    </fileset>
+                                </move>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.1</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.5</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>sonatype-nexus-staging</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
