@@ -60,7 +60,7 @@
 
     <build>
         <plugins>
-            <!--<plugin>
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>wagon-maven-plugin</artifactId>
                 <version>1.0-beta-5</version>
@@ -90,7 +90,7 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>-->
+            </plugin>
 
             <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
@@ -106,8 +106,8 @@
                                 <echo message="moving resources"/>
                                 <move todir="${destDir}">
                                     <fileset dir="${project.build.directory}/">
-                                        <include name="${target.data.filename}" />
-                                        <include name="${target.trie.filename}" />
+                                        <include name="${target.data.filename}"/>
+                                        <include name="${target.trie.filename}"/>
                                     </fileset>
                                 </move>
                             </target>
